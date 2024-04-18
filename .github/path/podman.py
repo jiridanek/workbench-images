@@ -16,6 +16,9 @@ def main():
         if arg == '--no-cache':
             continue
         args.append(arg)
+    # https://github.com/containers/podman/issues/22044
+    if len(sys.argv) > 1 and sys.argv[1] in ("build", "run"):
+        args.append("--network=slirp4netns")
     if len(sys.argv) > 1 and sys.argv[1] == "build" and "CACHE_IMAGE" in os.environ:
         args.append("--layers")
         args.append(f"--cache-from={os.environ['CACHE_IMAGE']}")
