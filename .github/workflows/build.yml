@@ -25,10 +25,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: make all
-        run: |
-          export PATH="${{ github.workspace }}/.github/path:/home/linuxbrew/.linuxbrew/bin:${PATH}"
-          make all
+      - run: |
+          make all PATH="${{ github.workspace }}/.github/path:/home/linuxbrew/.linuxbrew/bin:${PATH}"
         shell: bash
         env:
           CACHE_IMAGE: ghcr.io/${{ github.repository }}/workbench-images/build-cache
