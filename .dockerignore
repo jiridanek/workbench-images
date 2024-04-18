@@ -1,5 +1,6 @@
 .git
 .github
 .idea
+.dockerignore
 Dockerfile
 Containerfile
