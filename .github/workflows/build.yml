@@ -1,0 +1,30 @@
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+
+      - uses: "actions/checkout@v4"
+
+      - uses: "actions/setup-python@v5"
+        with:
+          python-version: "3.11"
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: make all
+        run: |
+          export PATH="${{ github.workspace }}/.github/path:${PATH}"
+          make build-all
+        shell: bash
+        env:
+          CACHE_IMAGE: ghcr.io/${{ github.repository }}/workbench-images/build-cache
