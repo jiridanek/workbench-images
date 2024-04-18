@@ -15,7 +15,7 @@ def main():
         if arg == '--no-cache':
             continue
         args.append(arg)
-    if "CACHE_IMAGE" in os.environ:
+    if len(sys.argv) > 1 and sys.argv[1] == "build" and "CACHE_IMAGE" in os.environ:
         args.append("--layers")
         args.append(f"--cache-from={os.environ['CACHE_IMAGE']}")
         # todo: conditionally, don't do this for PRs?
