@@ -5,6 +5,7 @@ Podman wrapper that turns on caching forcefully. This is to be used for builds i
 """
 import os
 import shlex
+import shutil
 import subprocess
 import sys
 
@@ -22,7 +23,7 @@ def main():
         args.append(f"--cache-to={os.environ['CACHE_IMAGE']}")
 
     print("+", shlex.join(args))
-    subprocess.check_call(executable="/usr/bin/podman", args=args)
+    subprocess.check_call(executable="/home/linuxbrew/.linuxbrew/bin/podman", args=args)
 
 
 if __name__ == '__main__':
