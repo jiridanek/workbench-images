@@ -26,7 +26,9 @@ def main():
         args.append(f"--cache-to={os.environ['CACHE_IMAGE']}")
 
     print("+", shlex.join(args))
-    subprocess.check_call(executable="/home/linuxbrew/.linuxbrew/bin/podman", args=args)
+    ret = subprocess.call(executable="/home/linuxbrew/.linuxbrew/bin/podman", args=args)
+
+    exit(ret)
 
 
 if __name__ == '__main__':
