@@ -35,14 +35,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - run: |
-          make all PATH="${{ github.workspace }}/.github/path:/home/linuxbrew/.linuxbrew/bin:${PATH}"
+          make all PATH="${{ github.workspace }}/.github/path:/home/linuxbrew/.linuxbrew/bin:${PATH}" RELEASE="cache" DATE="cache"
         shell: bash
         env:
           CACHE_IMAGE: ghcr.io/${{ github.repository }}/workbench-images/build-cache
         working-directory: base
 
       - run: |
-          make all PATH="${{ github.workspace }}/.github/path:/home/linuxbrew/.linuxbrew/bin:${PATH}"
+          make all PATH="${{ github.workspace }}/.github/path:/home/linuxbrew/.linuxbrew/bin:${PATH}" RELEASE="cache" DATE="cache"
         shell: bash
         env:
           CACHE_IMAGE: ghcr.io/${{ github.repository }}/workbench-images/build-cache
