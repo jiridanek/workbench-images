@@ -41,7 +41,8 @@ jobs:
           sudo rm -rf /opt/ghc &
           sudo rm -rf /usr/local/share/boost &
           sudo rm -rf /opt/hostedtoolcache/CodeQL &
-          sudo rm -rf "${AGENT_TOOLSDIRECTORY}"
+          # this is where python lives
+          # sudo rm -rf "${AGENT_TOOLSDIRECTORY}"
 
           sudo docker image prune --all --force &
 
