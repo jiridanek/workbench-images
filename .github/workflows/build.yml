@@ -14,6 +14,9 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Workaround https://github.com/containers/podman/issues/22152#issuecomment-2027705598
+        run: sudo apt-get remove -y podman crun
+
       - uses: actions/cache@v3
         with:
           path: |

@@ -24,7 +24,7 @@ def main():
         # todo: conditionally, don't do this for PRs?
         args.append(f"--cache-to={os.environ['CACHE_IMAGE']}")
 
-    print("+", shlex.join(args))
+    print("+", shlex.join(args), file=sys.stderr)
     ret = subprocess.call(executable="/home/linuxbrew/.linuxbrew/bin/podman", args=args)
 
     exit(ret)
