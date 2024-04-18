@@ -24,7 +24,7 @@ jobs:
       - name: make all
         run: |
           export PATH="${{ github.workspace }}/.github/path:${PATH}"
-          make build-all
+          make all
         shell: bash
         env:
           CACHE_IMAGE: ghcr.io/${{ github.repository }}/workbench-images/build-cache
