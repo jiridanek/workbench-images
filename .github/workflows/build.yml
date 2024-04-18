@@ -18,7 +18,6 @@ jobs:
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           /home/linuxbrew/.linuxbrew/bin/brew install podman
-          echo "PATH=/home/linuxbrew/.linuxbrew/bin:${PATH}" >> "${GITHUB_ENV}"
 
       - uses: docker/login-action@v3
         with:
@@ -28,7 +27,7 @@ jobs:
 
       - name: make all
         run: |
-          export PATH="${{ github.workspace }}/.github/path:${PATH}"
+          export PATH="${{ github.workspace }}/.github/path:/home/linuxbrew/.linuxbrew/bin:${PATH}"
           make all
         shell: bash
         env:
