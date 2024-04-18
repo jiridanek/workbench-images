@@ -16,12 +16,13 @@ def main():
             continue
         args.append(arg)
     if "CACHE_IMAGE" in os.environ:
+        args.append("--layers")
         args.append(f"--cache-from={os.environ['CACHE_IMAGE']}")
         # todo: conditionally, don't do this for PRs?
         args.append(f"--cache-to={os.environ['CACHE_IMAGE']}")
 
     print("+", shlex.join(args))
-    subprocess.call(executable="/usr/bin/podman", args=args)
+    subprocess.check_call(executable="/usr/bin/podman", args=args)
 
 
 if __name__ == '__main__':
