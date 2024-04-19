@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: "ubuntu-latest"
+    env:
+      DOCKER_CLI_EXPERIMENTAL: enabled
+
     steps:
 
       # I'm too lazy to take care of this myself, see the packaged action below
@@ -57,6 +60,19 @@ jobs:
 #        run: |
 #          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 #          /home/linuxbrew/.linuxbrew/bin/brew install podman
+
+      # ERROR: Cache export is not supported for the docker driver.
+      # Switch to a different driver, or turn on the containerd image store, and try again.
+      # https://github.com/crazy-max/ghaction-setup-docker
+      - uses: crazy-max/ghaction-setup-docker@v3
+        with:
+          # version: v24.0.6
+          daemon-config: |
+            {
+              "features": {
+                "containerd-snapshotter": true
+              }
+            }
 
       # https://github.com/containers/podman/issues/16192#issuecomment-1280048847
       # podman is apparently less space-efficient than docker and runs out of disk space building cuda bases
