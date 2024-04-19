@@ -17,6 +17,9 @@ def main():
     if second == "build":
         args.append("buildx")
         args.append("build")
+    else:
+        args.append(second)
+
     for arg in rest:
         if arg == '--no-cache':
             continue
@@ -25,7 +28,7 @@ def main():
     # if second in ("build", "run"):
     #     args.insert(2, "--network=slirp4netns")
     if second == "build" and "CACHE_IMAGE" in os.environ:
-        args.append("--layers")
+        # args.append("--layers")
         args.append("--retry=10")
         args.append(f"--cache-from={os.environ['CACHE_IMAGE']}")
         # todo: conditionally, don't do this for PRs?
