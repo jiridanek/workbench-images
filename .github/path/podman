@@ -10,15 +10,17 @@ import sys
 
 
 def main():
-    args = []
-    for arg in sys.argv:
+    # podman run/build ...
+    first, second, *rest = sys.argv
+    args = ["/home/linuxbrew/.linuxbrew/bin/podman", second]
+    for arg in rest:
         if arg == '--no-cache':
             continue
         args.append(arg)
     # https://github.com/containers/podman/issues/22044
-    if len(sys.argv) > 1 and sys.argv[1] in ("build", "run"):
+    if second in ("build", "run"):
         args.insert(2, "--network=slirp4netns")
-    if len(sys.argv) > 1 and sys.argv[1] == "build" and "CACHE_IMAGE" in os.environ:
+    if second == "build" and "CACHE_IMAGE" in os.environ:
         args.append("--layers")
         args.append("--retry=10")
         args.append(f"--cache-from={os.environ['CACHE_IMAGE']}")
@@ -26,7 +28,7 @@ def main():
         args.append(f"--cache-to={os.environ['CACHE_IMAGE']}")
 
     print("+", shlex.join(args), file=sys.stderr)
-    ret = subprocess.call(executable="/home/linuxbrew/.linuxbrew/bin/podman", args=args)
+    ret = subprocess.call(args=args)
 
     exit(ret)
 
