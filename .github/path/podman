@@ -28,9 +28,6 @@ def main():
     # if second in ("build", "run"):
     #     args.insert(2, "--network=slirp4netns")
     if second == "build":
-        # https://github.com/moby/buildkit/issues/2343#issuecomment-1177000949
-        args.append("--oci-worker=false")
-        args.append("--containerd-worker=true")
         # WARNING: No output specified with docker-container driver. Build result will only remain in the build cache. To push result image into registry use --push or to load image into docker use --load
         # args.append("--load")
         # ERROR: failed to solve: failed to read dockerfile: open Dockerfile: no such file or directory
