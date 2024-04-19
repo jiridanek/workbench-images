@@ -8,6 +8,14 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
 
+      # https://github.com/marketplace/actions/maximize-build-disk-space
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 128
+          swap-size-mb: 256
+          remove-dotnet: 'true'
+
       - uses: "actions/checkout@v4"
 
       - uses: "actions/setup-python@v5"
@@ -34,23 +42,25 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Free up disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet &
-          sudo rm -rf /usr/local/lib/android &
-          sudo rm -rf /opt/ghc &
-          sudo rm -rf /usr/local/share/boost &
-          sudo rm -rf /opt/hostedtoolcache/CodeQL &
-          # this is where python lives
-          # sudo rm -rf "${AGENT_TOOLSDIRECTORY}"
+      # I'm too lazy to take care of this myself, see the packaged action above
 
-          sudo docker image prune --all --force &
-
-          sudo swapoff -a
-          sudo rm -f /mnt/swapfile
-
-          wait
-        shell: bash
+#      - name: Free up disk space
+#        run: |
+#          sudo rm -rf /usr/share/dotnet &
+#          sudo rm -rf /usr/local/lib/android &
+#          sudo rm -rf /opt/ghc &
+#          sudo rm -rf /usr/local/share/boost &
+#          sudo rm -rf /opt/hostedtoolcache/CodeQL &
+#          # this is where python lives
+#          # sudo rm -rf "${AGENT_TOOLSDIRECTORY}"
+#
+#          sudo docker image prune --all --force &
+#
+#          sudo swapoff -a
+#          sudo rm -f /mnt/swapfile
+#
+#          wait
+#        shell: bash
 
       - run: |
           make all PATH="${{ github.workspace }}/.github/path:/home/linuxbrew/.linuxbrew/bin:${PATH}" RELEASE="cache" DATE="cache"
