@@ -29,7 +29,7 @@ def main():
     #     args.insert(2, "--network=slirp4netns")
     if second == "build" and "CACHE_IMAGE" in os.environ:
         # args.append("--layers")
-        args.append("--retry=10")
+        # args.append("--retry=10")
         args.append(f"--cache-from={os.environ['CACHE_IMAGE']}")
         # todo: conditionally, don't do this for PRs?
         args.append(f"--cache-to={os.environ['CACHE_IMAGE']}")
