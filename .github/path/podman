@@ -10,6 +10,14 @@ import sys
 
 
 def main():
+    cache_repo = os.environ['CACHE_IMAGE'] if "CACHE_IMAGE" in os.environ else ""
+    # docker will cache to :latest, not to content-hashed :sha256 tag
+    # and mode=max does not change that
+    for arg in sys.argv[1:]:
+        # -t image name
+        if arg.startswith("workbench-images:"):
+            cache_repo += f"/{arg}"
+
     # podman run/build ...
     first, second, *rest = sys.argv
     # args = ["/home/linuxbrew/.linuxbrew/bin/podman", second]
@@ -40,10 +48,10 @@ def main():
     if second == "build" and "CACHE_IMAGE" in os.environ:
         # args.append("--layers")
         # args.append("--retry=10")
-        args.append(f"--cache-from={os.environ['CACHE_IMAGE']}")
+        args.append(f"--cache-from={cache_repo}")
         # todo: conditionally, don't do this for PRs?
         # args.append(f"--cache-to={os.environ['CACHE_IMAGE']}")
-        args.append(f"--cache-to=type=registry,mode=max,ref={os.environ['CACHE_IMAGE']}")
+        args.append(f"--cache-to=type=registry,mode=max,ref={cache_repo}")
 
     print("+", shlex.join(args), file=sys.stderr)
     ret = subprocess.call(args=args)
