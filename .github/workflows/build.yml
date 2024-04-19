@@ -61,6 +61,10 @@ jobs:
       # https://github.com/containers/podman/issues/16192#issuecomment-1280048847
       # podman is apparently less space-efficient than docker and runs out of disk space building cuda bases
       - uses: docker/setup-buildx-action@v3
+        with:
+          # reuse built things directly in subsequent builds
+          # https://github.com/moby/buildkit/issues/2343#issuecomment-1177000949
+          driver: docker
 
       - uses: docker/login-action@v3
         with:
