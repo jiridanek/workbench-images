@@ -8,6 +8,22 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
 
+      # I'm too lazy to take care of this myself, see the packaged action below
+      #  but this parallel deletion seems faster than what the action would do
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet &
+          sudo rm -rf /usr/local/lib/android &
+          sudo rm -rf /opt/ghc &
+          sudo rm -rf /usr/local/share/boost &
+          sudo rm -rf /opt/hostedtoolcache/CodeQL &
+          # this is where python lives
+          sudo rm -rf "${AGENT_TOOLSDIRECTORY}" &
+          sudo docker image prune --all --force &
+
+          wait
+        shell: bash
+
       # https://github.com/marketplace/actions/maximize-build-disk-space
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
@@ -46,26 +62,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # I'm too lazy to take care of this myself, see the packaged action above
-
-#      - name: Free up disk space
-#        run: |
-#          sudo rm -rf /usr/share/dotnet &
-#          sudo rm -rf /usr/local/lib/android &
-#          sudo rm -rf /opt/ghc &
-#          sudo rm -rf /usr/local/share/boost &
-#          sudo rm -rf /opt/hostedtoolcache/CodeQL &
-#          # this is where python lives
-#          # sudo rm -rf "${AGENT_TOOLSDIRECTORY}"
-#
-#          sudo docker image prune --all --force &
-#
-#          sudo swapoff -a
-#          sudo rm -f /mnt/swapfile
-#
-#          wait
-#        shell: bash
 
       - run: |
           make all PATH="${{ github.workspace }}/.github/path:/home/linuxbrew/.linuxbrew/bin:${PATH}" RELEASE="cache" DATE="cache"
