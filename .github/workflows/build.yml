@@ -43,20 +43,24 @@ jobs:
         with:
           python-version: "3.11"
 
-      # https://github.com/containers/buildah/issues/2521#issuecomment-884779112
-      - name: Workaround https://github.com/containers/podman/issues/22152#issuecomment-2027705598
-        run: sudo apt-get remove -y --allow-remove-essential podman crun shim-signed fuse 'libfuse*' fuse-overlayfs
+#      # https://github.com/containers/buildah/issues/2521#issuecomment-884779112
+#      - name: Workaround https://github.com/containers/podman/issues/22152#issuecomment-2027705598
+#        run: sudo apt-get remove -y --allow-remove-essential podman crun shim-signed fuse 'libfuse*' fuse-overlayfs
+#
+#      - uses: actions/cache@v3
+#        with:
+#          path: |
+#            /home/linuxbrew/.linuxbrew
+#          key: linuxbrew
+#
+#      - name: Install podman
+#        run: |
+#          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+#          /home/linuxbrew/.linuxbrew/bin/brew install podman
 
-      - uses: actions/cache@v3
-        with:
-          path: |
-            /home/linuxbrew/.linuxbrew
-          key: linuxbrew
-
-      - name: Install podman
-        run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          /home/linuxbrew/.linuxbrew/bin/brew install podman
+      # https://github.com/containers/podman/issues/16192#issuecomment-1280048847
+      # podman is apparently less space-efficient than docker and runs out of disk space building cuda bases
+      - uses: docker/setup-buildx-action@v3
 
       - uses: docker/login-action@v3
         with:

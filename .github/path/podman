@@ -12,14 +12,18 @@ import sys
 def main():
     # podman run/build ...
     first, second, *rest = sys.argv
-    args = ["/home/linuxbrew/.linuxbrew/bin/podman", second]
+    # args = ["/home/linuxbrew/.linuxbrew/bin/podman", second]
+    args = ["docker"]
+    if second == "build":
+        args.append("buildx")
+        args.append("build")
     for arg in rest:
         if arg == '--no-cache':
             continue
         args.append(arg)
-    # https://github.com/containers/podman/issues/22044
-    if second in ("build", "run"):
-        args.insert(2, "--network=slirp4netns")
+    # # https://github.com/containers/podman/issues/22044
+    # if second in ("build", "run"):
+    #     args.insert(2, "--network=slirp4netns")
     if second == "build" and "CACHE_IMAGE" in os.environ:
         args.append("--layers")
         args.append("--retry=10")
