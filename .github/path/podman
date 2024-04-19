@@ -23,6 +23,9 @@ def main():
     for arg in rest:
         if arg == '--no-cache':
             continue
+        if arg.startswith("localhost/"):
+            args.append(arg[len("localhost/"):])
+            continue
         args.append(arg)
     # # https://github.com/containers/podman/issues/22044
     # if second in ("build", "run"):
