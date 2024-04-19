@@ -27,6 +27,8 @@ def main():
     # # https://github.com/containers/podman/issues/22044
     # if second in ("build", "run"):
     #     args.insert(2, "--network=slirp4netns")
+    if second == "build":
+        args.append("-fContainerfile")
     if second == "build" and "CACHE_IMAGE" in os.environ:
         # args.append("--layers")
         # args.append("--retry=10")
